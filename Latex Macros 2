@@ -152,7 +152,7 @@
 \newcommand{\fgrp}{\mathrm{FGrp}}%
 \newcommand{\grpf}{\mathrm{GrpFun}}%
 %\newcommand{\nfin}{\Spc_{n}}%
-\newcommand{\nfina}[1]{\Spc_{n}^{#1}}%
+%\newcommand{\nfina}[1]{\Spc_{n}^{#1}}%
 \newcommand{\wcov}{\operatorname{CAlg}^{\text{w.cov}}}%
 \newcommand{\GalExt}[2]{\calg^{{#2}\text{-}\mathrm{gal}}(#1)}
 \newcommand{\wgpd}[1]{\pi_{\le 1}^{\mathrm{wk}}(#1)}
