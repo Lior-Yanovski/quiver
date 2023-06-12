@@ -1,9 +1,0 @@
-
-\newcommand{\idem}{\mathrm{idem}}
-\newcommand{\Lnf}{L_{\le n}^f}
-\newcommand{\LTm}{L_{T(m)}}
-\newcommand{\LTn}{L_{T(n)}}
-\newcommand{\LTnp}{L_{T(n+1)}}
-\newcommand{\THH}{\mathit{THH}}
-\newcommand{\TC}{\mathit{TC}}
-\newcommand{\triv}{\mathit{triv}}

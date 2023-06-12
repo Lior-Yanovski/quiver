@@ -1,0 +1,510 @@
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+% \usepackage{preamble}
+\usepackage[new]{old-arrows}
+\usepackage{comment}
+
+\geometry{verbose}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+%\usepackage{color}
+\usepackage{babel}
+\usepackage{refstyle}
+\usepackage{extpfeil}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{nicefrac}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[all]{xy}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=true]
+ {hyperref}
+ 
+\hypersetup{
+    colorlinks, linkcolor=OliveGreen,
+    citecolor=OliveGreen, urlcolor=OliveGreen
+}
+ 
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{dsfont}
+
+\usepackage{bookmark}
+\bookmarksetup{numbered}
+
+\makeatletter
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+%\newtheoremstyle{ctheorem}{}{}{}{}{\color{blue}\bfseries}{}{ }{}
+\newtheoremstyle{ctheorem}{}{}{}{}{\color{black}\bfseries}{}{ }{}
+\theoremstyle{ctheorem}
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{notation}[thm]{Notation}
+\newtheorem{convention}[thm]{Convention}
+\newtheorem{construction}[thm]{Construction}
+\newtheorem{conjecture}[thm]{Conjecture}
+\theoremstyle{plain}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{plain}
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{definition}
+\newtheorem{rem}[thm]{Remark}
+\theoremstyle{definition}
+\newtheorem{example}[thm]{Example}
+\theoremstyle{plain}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{war}[thm]{Warning}
+\theoremstyle{definition}
+\newtheorem{que}[thm]{Question}
+\theoremstyle{definition}
+\newtheorem{ter}[thm]{Terminology}
+\theoremstyle{definition}
+\newtheorem{ques}[thm]{Question}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+
+\usepackage{mymacros}
+
+% \usepackage[T1]{fontenc}
+% \usepackage[latin9]{inputenc}
+% \usepackage{mathtools}
+% \usepackage{geometry}
+% \geometry{verbose}
+% \setcounter{secnumdepth}{2}
+% \setcounter{tocdepth}{2}
+% \setlength{\parskip}{\smallskipamount}
+% \setlength{\parindent}{0pt}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\definecolor{DefColor}{rgb}{0.6,0.15,0.25}
+% \usepackage{color}
+\usepackage{babel}
+\usepackage{cjhebrew}
+\DeclareFontFamily{U}{rcjhbltx}{}
+\DeclareFontShape{U}{rcjhbltx}{m}{n}{<->s*[1.2]rcjhbltx}{}
+\DeclareSymbolFont{hebrewletters}{U}{rcjhbltx}{m}{n}
+\DeclareMathSymbol{\pretsadi}{\mathord}{hebrewletters}{118}
+%\usepackage[unicode=true,pdfusetitle,
+% bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+% breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=true]
+% {hyperref}
+
+\newcommand{\dayc}{\mathrm{Day}}
+\newcommand{\Yo}{\text{\usefont{U}{min}{m}{n}\symbol{'110}}}
+
+
+\DeclareFontFamily{U}{min}{}
+\DeclareFontShape{U}{min}{m}{n}{<-> dmjhira}{}
+
+
+\renewcommand{\labelenumi}{\normalfont{(\arabic{enumi})}}
+\makeatother
+
+
+% \author{Shay Ben Moshe \thanks{Einstein Institute of Mathematics, Hebrew University of Jerusalem.} \and Shachar Carmeli\thanks{Department of Mathematics, University of Copenhagen.} \and Tomer M. Schlank\thanks{Einstein Institute of Mathematics, Hebrew University of Jerusalem.} \and Lior Yanovski\thanks{Einstein Institute of Mathematics, Hebrew University of Jerusalem.}}
+
+\ProvidesPackage{quiver}[2021/01/11 quiver]
+
+% `tikz-cd` is necessary to draw commutative diagrams.
+\RequirePackage{tikz-cd}
+% `amssymb` is necessary for `\lrcorner` and `\ulcorner`.
+\RequirePackage{amssymb}
+% `calc` is necessary to draw curved arrows.
+\usetikzlibrary{calc}
+% `pathmorphing` is necessary to draw squiggly arrows.
+\usetikzlibrary{decorations.pathmorphing}
+
+% A TikZ style for curved arrows of a fixed height, due to AndréC.
+\tikzset{curve/.style={settings={#1},to path={(\tikztostart)
+    .. controls ($(\tikztostart)!\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+    and ($(\tikztostart)!1-\pv{pos}!(\tikztotarget)!\pv{height}!270:(\tikztotarget)$)
+    .. (\tikztotarget)\tikztonodes}},
+    settings/.code={\tikzset{quiver/.cd,#1}
+        \def\pv##1{\pgfkeysvalueof{/tikz/quiver/##1}}},
+    quiver/.cd,pos/.initial=0.35,height/.initial=0}
+
+% TikZ arrowhead/tail styles.
+\tikzset{tail reversed/.code={\pgfsetarrowsstart{tikzcd to}}}
+\tikzset{2tail/.code={\pgfsetarrowsstart{Implies[reversed]}}}
+\tikzset{2tail reversed/.code={\pgfsetarrowsstart{Implies}}}
+% TikZ arrow styles.
+\tikzset{no body/.style={/tikz/dash pattern=on 0 off 1mm}}
+
+\endinput
+
+\ProvidesPackage{mymacros}[2020/10/06 Macros for paper on cyclotomic extensions]
+
+\newcommand{\corollaryname}{Corollary}
+\newcommand{\definitionname}{Definition}
+\newcommand{\examplename}{Example}
+\newcommand{\lemmaname}{Lemma}
+\newcommand{\propositionname}{Proposition}
+\newcommand{\remarkname}{Remark}
+\newcommand{\theoremname}{Theorem}
+
+\newtheorem{theorem}{Theorem}
+\renewcommand*{\thetheorem}{\Alph{theorem}}
+
+\newtheorem*{thm*}{Theorem}
+
+
+\usepackage{todonotes}
+\newcommand{\tomcomment}[1]{\todo[color=Orange!40]{#1}}
+\newcommand{\scomment}[1]{\todo[color=red!40]{#1}}
+\newcommand{\tobcomment}[1]{\todo[color=green!40]{#1}}
+\newcommand{\lcomment}[1]{\todo[color=blue!40]{#1}}
+
+
+%emphasis defs
+\newcommand{\mdef}[1]{\textcolor{DefColor}{#1}} 
+%Tobi: Not a big fan of this color for defined terms, so I removed it for now. revert if you prefer the previous version.
+% \newcommand{\mdef}[1]{{#1}}
+\newcommand{\tdef}[1]{\textit{\mdef{#1}}} 
+
+% \newcommand{\iso}{\overset{\sim}{\longrightarrow}}
+\newcommand{\iso}{\xrightarrow{\;\smash{\raisebox{-0.5ex}{\ensuremath{\scriptstyle\sim}}}\;}}
+
+\newcommand{\too}{\longrightarrow}%
+\newcommand{\into}{\hookrightarrow}%
+\newcommand{\onto}{\twoheadrightarrow}%
+\newcommand{\sseq}{\subseteq}%
+\newcommand{\adj}{\leftrightarrows}%
+\newcommand{\oto}[1]{\xrightarrow{#1}}%
+\newcommand{\xonto}[2][]{%
+  \xrightarrow[#1]{#2}\mathrel{\mkern-14mu}\rightarrow
+}
+\newcommand{\ofrom}[1]{\xleftarrow{#1}}%
+\newcommand{\bb}[1]{\mathbb{#1}}%
+\newcommand{\es}{\varnothing}%
+\newcommand{\oo}[1]{\overset{\circ}{#1}}%
+\newcommand{\cone}{\triangleright}%
+\newcommand{\from}{\leftarrow}%
+\newcommand{\nto}{\rightsquigarrow}%
+
+
+%math operators
+\DeclareMathOperator{\Map}{Map}%
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Shv}{Shv}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Coh}{H}
+\DeclareMathOperator{\Mod}{\operatorname{Mod}}%
+\DeclareMathOperator{\Perf}{\operatorname{Perf}}%
+\newcommand{\LocMod}{\Mod^\wedge}%
+\DeclareMathOperator{\opMod}{\operatorname{opMod}}%
+\DeclareMathOperator{\LMod}{\operatorname{LMod}}%
+\DeclareMathOperator{\RMod}{\operatorname{RMod}}%
+\DeclareMathOperator{\BMod}{\operatorname{BMod}}%
+
+\newcommand{\Modfin}[2]{\Mod_{#1}^{[0,#2]\text{-}\mathrm{fin}}}
+\newcommand{\Spfin}[1]{\Sp^{[0,#1]\text{-}\mathrm{fin}}}
+\newcommand{\Sptors}[1]{\Sp^{[0,#1]\text{-}\mathrm{tor}}}
+\newcommand{\ModE}[1][n]{\cl{\Mod}_{E_{#1}}}
+\newcommand{\Tot}[1]{\Sph_{p,#1}}
+\newcommand{\OR}{\mathfrak{R}}
+\newcommand{\ORone}{\mathfrak{R}}
+\newcommand{\ORtwo}{\mathfrak{S}}
+
+\newcommand{\length}{\mathrm{len}}
+
+\newcommand{\Psh}{\mathcal{P}}
+\newcommand{\Lor}{L^{\mathrm{or}}}
+\newcommand{\taut}{\mathrm{taut}}
+
+
+\DeclareMathOperator{\QCoh}{QCoh}
+\DeclareMathOperator{\crng}{CRing}%
+\DeclareMathOperator{\alg}{Alg}%
+\DeclareMathOperator{\Alg}{Alg}%
+\DeclareMathOperator{\Nat}{Nat}%
+\DeclareMathOperator{\calg}{CAlg}
+\DeclareMathOperator{\CAlg}{CAlg}
+\DeclareMathOperator{\cocalg}{coCAlg}
+\DeclareMathOperator{\bicalg}{biCAlg}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\cat}{Cat}
+\DeclareMathOperator{\Cat}{Cat}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\tr}{Tr}%
+\DeclareMathOperator{\Ind}{Ind}%
+\DeclareMathOperator{\Ker}{Ker}%
+\DeclareMathOperator{\aut}{Aut}%
+\DeclareMathOperator{\Alt}{Alt}%
+\DeclareMathOperator{\CMon}{CMon}
+\DeclareMathOperator{\Mon}{Mon}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Spec}{Spec}%
+\DeclareMathOperator{\Pts}{Pts}%
+\DeclareMathOperator{\Aug}{Aug}%
+\DeclareMathOperator{\Pro}{Pro}%
+\DeclareMathOperator{\DM}{DM}%
+\DeclareMathOperator{\Rep}{Rep}
+\DeclareMathOperator{\Wt}{Wt}%
+\DeclareMathOperator{\Hopf}{Hopf}%
+\DeclareMathOperator{\cospec}{coSpec}%
+\DeclareMathOperator{\Vect}{Vec}%
+
+
+% \newcommand{\CAlg}[1]{\calg(#1)}
+
+
+%Orientations and pre-orientations
+\newcommand{\Or}[3]{\mathrm{Or}^{(#3)}_{#1}(#2)}%
+\newcommand{\POr}[3]{\mathrm{POr}^{(#3)}_{#1}(#2)}%
+\newcommand{\por}[3]{\mathfrak{por}^{(#3)}_{#1}(#2)}%
+
+%discreprency spectrum
+% \newcommand{\disc}{\mu}
+% \newcommand{\disc}[1][\one]{\roots[#1]{p^\infty}{\pi}}
+\newcommand{\disc}[1][\one]{\mu_{\Sph_{p}}(#1)}
+
+%Group Schemes
+\newcommand{\detpm}{\operatorname*{\mathrm{det}_\pm}}
+\newcommand{\Cnt}{C}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\Pic}{\mathrm{Pic}}
+\newcommand{\pic}{\mathrm{pic}}
+\newcommand{\Picalg}{\mathrm{Pic}^{\mathrm{alg},0}}
+\newcommand{\Gm}{\mathbb{G}_m}
+\newcommand{\Morex}{\GG}
+\newcommand{\Mor}{\mathbb{S}}
+%specific categories
+\newcommand{\Fin}{\mathrm{Fin}}%
+\newcommand{\Sp}{\mathrm{Sp}}
+\newcommand{\pSp}{\widehat{\Sp}_{p}}
+\newcommand{\Prl}{\mathrm{Pr}}
+\newcommand{\Prst}{\mathrm{Pr_{st}}}
+\newcommand{\Prsad}{\mathrm{Pr}^{\sad{\infty}}}
+\newcommand{\Spc}{\mathcal{S}}%
+\newcommand{\pDiv}{\mathrm{pDiv}}
+\newcommand{\Ab}{\mathrm{Ab}}%
+\newcommand{\Set}{\mathrm{Set}}
+\newcommand{\Lat}{\mathrm{Lat}}
+\newcommand{\Aff}{\mathrm{Aff}}
+\newcommand{\cgrp}{\mathrm{CGrp}}%
+\newcommand{\fgrp}{\mathrm{FGrp}}%
+\newcommand{\grpf}{\mathrm{GrpFun}}%
+%\newcommand{\nfin}{\Spc_{n}}%
+\newcommand{\nfina}[1]{\Spc_{n}^{#1}}%
+\newcommand{\wcov}{\operatorname{CAlg}^{\text{w.cov}}}%
+\newcommand{\GalExt}[2]{\calg^{{#2}\text{-}\mathrm{gal}}(#1)}
+\newcommand{\wgpd}[1]{\pi_{\le 1}^{\mathrm{wk}}(#1)}
+\newcommand{\wgrp}[1]{\pi_{1}^{\mathrm{wk}}(#1)}
+%functors and natural transformations
+\newcommand{\Nm}{\mathrm{Nm}}
+\newcommand{\Id}{\mathrm{Id}}
+\newcommand{\bc}{\mathrm{BC}}%
+\newcommand{\ev}{\mathrm{ev}}%
+\newcommand{\Ev}{\mathrm{Ev}}%
+\newcommand{\Exp}{\mathrm{Exp}}%
+\newcommand{\hatotimes}{\,\widehat{\otimes}\,}%
+\newcommand{\MFG}{\cM_{\mathit{FG}}}
+
+%universal oriented category 
+\newcommand{\univ}[3]{{#1}_{#2,#3}^{\mathrm{or}}}
+\newcommand{\puniv}[3]{{#1}_{#2,#3}^{\mathrm{por}}}
+\newcommand{\virt}[3]{\widehat{#1}_{#2,#3}}
+
+
+\newcommand{\inv}[1]{\nicefrac{1}{#1}}
+
+
+%Fourier transform
+\newcommand{\Four}{\mathfrak{F}}
+
+%Inverse Fourier transform
+\newcommand{\invFur}{\mathfrak{F}^{-1}}
+\newcommand{\emb}{\iota}
+
+%\Underlying space
+%\newcommand{\und}[1]{\Omega^\infty #1}
+%\newcommand{\und}[1]{\pi (#1)
+%\newcommand{\und}[1]{\langle{#1}\rangle}
+% \newcommand{\und}[1]{#1}
+\newcommand{\und}[1]{\lfloor{#1}\rfloor}
+
+%Brown Comenetz dual
+% \newcommand{\Dual}[2]{#1^{*_{#2}}}
+\newcommand{\Dual}[2]{I_p^{(#2)}{#1}}
+
+
+%decategorification
+\newcommand{\Dec}[1]{{#1}^{\mathfrak{d}}}
+
+%relative tensor product
+% \newcommand{\relotimes}[1]{\underset{#1}{\otimes}}
+\newcommand{\relotimes}[1]{\otimes_{#1}}
+
+%Spectra 
+\newcommand{\KU}{\emph{\text{KU}}}
+\newcommand{\ku}{\emph{\text{ku}}}
+\newcommand{\BU}{\emph{\text{BU}}}
+\newcommand{\MU}{\emph{\text{MU}}}
+\newcommand{\MUP}{\emph{\text{MUP}}}
+\newcommand{\BP}{\emph{\text{BP}}}
+\newcommand{\BO}{\emph{\text{BO}}}
+\newcommand{\KO}{\emph{\text{KO}}} 
+\newcommand{\MO}{\emph{\text{MO}}} 
+
+%objects
+\newcommand{\pt}{\mathrm{pt}}%
+\newcommand{\one}{\mathds{1}}%
+
+%analysis 
+\newcommand{\norm}[1]{||#1||} 
+\newcommand{\scalprod}[2]{\left<#1,#2\right>} 
+
+
+%colors
+\newcommand{\red}[1]{\textcolor{red}{#1}}%
+\newcommand{\white}[1]{\textcolor{white}{#1}}%
+
+%decorations
+\newcommand{\gp}{\mathrm{gp}}%
+\newcommand{\htt}{\mathrm{ht}}%
+\newcommand{\qin}{\quad\in\quad}%
+\newcommand{\co}{\colon}%
+\newcommand{\dbl}{\mathrm{dbl}}%
+\newcommand{\ldbl}{\mathrm{ldbl}}%
+\newcommand{\perf}{\mathrm{perf}}%
+\newcommand{\cn}{\mathrm{cn}}%
+\newcommand{\op}{\mathrm{op}}%
+\newcommand{\cts}{\mathrm{cts}}%
+\newcommand{\pb}{\mathrm{pb}}%
+\newcommand{\st}{\mathrm{st}}%
+\newcommand{\gal}{\mathrm{gal}}%
+\newcommand{\re}{\mathrm{ev}}%
+\newcommand{\oplax}{\mathrm{oplax}}%
+\newcommand{\lax}{\mathrm{lax}}%
+\newcommand{\tlax}{\mathrm{lax}}%
+\newcommand{\sad}[1]{\scalebox{0.6}{\ensuremath{\oplus}}\text{-}#1}%
+\newcommand{\comp}{\omega}
+\newcommand{\Day}{\mathrm{Day}}
+\newcommand{\Ptw}{\mathrm{Ptw}}
+\newcommand{\add}{\mathrm{add}}
+\newcommand{\prim}{\mathrm{prim}}
+\newcommand{\et}{\mathrm{et}}%
+\newcommand{\cl}[1]{\overline{#1}}%
+\newcommand{\tot}{\mathrm{tot}}
+\newcommand{\ab}{\mathrm{ab}}
+\newcommand{\good}{\mathrm{good}}
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\aug}{\star}
+\newcommand{\tors}{\mathrm{tor}}
+\newcommand{\pfin}[1]{#1 \text{-}\fin}
+\newcommand{\cnfin}{{\cn,\pfin{\pi}}}
+\newcommand{\psmall}[1]{#1 \text{-}\mathrm{small}} 
+\newcommand{\ptors}[1]{#1 \text{-}\tors} 
+%limits
+\newcommand{\colim}{\underrightarrow{\operatorname{lim}}\,}%
+\newcommand{\invlim}{\underleftarrow{\operatorname{lim}\,}}%
+
+
+\newcommand{\Kadd}{K_{\mathrm{add}}}
+\newcommand{\Proj}{\mathrm{Proj}}
+
+%others
+
+\newcommand{\coloneqq}{\co =}
+
+
+%specific algebraic objects 
+
+% \newcommand{\SS}{\mathbb{S}}
+\newcommand{\BB}{\mathbb{B}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\DD}{\mathbb{D}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\GG}{\mathbb{G}}
+\newcommand{\WW}{\mathbb{W}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\Sph}{\mathbb{S}}
+\newcommand{\KK}{\mathbb{K}}
+
+%Categories
+\newcommand{\cA}{\mathscr{A}}
+\newcommand{\cB}{\mathscr{B}}
+\newcommand{\cC}{\mathscr{C}}
+\newcommand{\cD}{\mathscr{D}}
+\newcommand{\cE}{\mathscr{E}}
+\newcommand{\cK}{\mathscr{K}}
+\newcommand{\cT}{\mathscr{T}}
+\newcommand{\cM}{\mathscr{M}}
+\newcommand{\cS}{\mathscr{S}}
+\newcommand{\cO}{\mathscr{O}}
+\newcommand{\cQ}{\mathscr{Q}}
+\newcommand{\cF}{\mathscr{F}}
+\newcommand{\cV}{\mathscr{V}}
+
+
+%sheaves 
+\newcommand{\sA}{\mathcal{A}}
+\newcommand{\sB}{\mathcal{B}}
+\newcommand{\sC}{\mathcal{C}}
+\newcommand{\sD}{\mathcal{D}}
+\newcommand{\sF}{\mathcal{F}}
+\newcommand{\sG}{\mathcal{G}}
+%finite flat group schemes & p-divisible groups 
+\newcommand{\dG}{\mathbf{G}}
+\newcommand{\dH}{\mathbf{H}}
+\newcommand{\roots}[3][\one]{\mu_{#2}^{(#3)}(#1)}
+
+%rings 
+\newcommand{\funcs}{\mathcal{O}}
+\newcommand{\dist}{\mathcal{D}}
+\newcommand{\cyc}[3][\one]{#1[\omega_{#2}^{(#3)}]}
+\newcommand{\orcyc}[3][\one]{#1[\omega_{#2}^{(#3)}]}
+\newcommand{\Sphdet}[1]{\Sph_{#1}\langle\det\rangle}
+% \newcommand{\charac}[2]{\one^{\und{\Dual{#1}{#2}}}}
+\newcommand{\chr}{\mathrm{char}}
+%tsadi
+\usepackage{cjhebrew}
+\DeclareFontFamily{U}{rcjhbltx}{}
+\DeclareFontShape{U}{rcjhbltx}{m}{n}{<->s*[1.2]rcjhbltx}{}
+\DeclareSymbolFont{hebrewletters}{U}{rcjhbltx}{m}{n}
+\DeclareMathSymbol{\pretsadi}{\mathord}{hebrewletters}{118}
+\newcommand{\tsadi}{\pretsadi}
+
+
+\DeclareMathOperator{\Thick}{Thick}
+\DeclareMathOperator{\Loc}{Loc}
+\newcommand{\cent}[2]{\mathfrak{Z}_{#1}(#2)}
+
+\newcommand\noloc{%
+  \nobreak
+  \mspace{6mu plus 1mu}
+  {:}
+  \nonscript\mkern-\thinmuskip
+  \mathpunct{}
+  \mspace{2mu}
+}
+
+\newcommand{\idem}{\mathrm{idem}}
+\newcommand{\Lnf}{L_{\le n}^f}
+\newcommand{\LTm}{L_{T(m)}}
+\newcommand{\LTn}{L_{T(n)}}
+\newcommand{\LTnp}{L_{T(n+1)}}
+\newcommand{\THH}{\mathit{THH}}
+\newcommand{\TC}{\mathit{TC}}
+\newcommand{\triv}{\mathit{triv}}
