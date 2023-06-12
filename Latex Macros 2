@@ -4,7 +4,7 @@
 \newcommand{\Prl}{\mathrm{Pr}}
 \newcommand{\Prst}{\mathrm{Pr_{st}}}
 \newcommand{\Prsad}{\mathrm{Pr}^{\sad{\infty}}}
-\newcommand{\Spc}{\mathcal{S}}%
+\newcommand{\Spc}{\mathrm{S}}%
 \newcommand{\pDiv}{\mathrm{pDiv}}
 \newcommand{\Ab}{\mathrm{Ab}}%
 \newcommand{\Set}{\mathrm{Set}}
