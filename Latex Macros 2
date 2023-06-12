@@ -1,15 +1,9 @@
-\newcommand{\Fin}{\mathrm{Fin}}%
-\newcommand{\Sp}{\mathcal{S}}
-\newcommand{\pSp}{\widehat{\Sp}_{p}}
-\newcommand{\Prl}{\mathrm{Pr}}
-\newcommand{\Prst}{\mathrm{Pr_{st}}}
-\newcommand{\Prsad}{\mathrm{Pr}^{\sad{\infty}}}
-\newcommand{\Spc}{\mathrm{S}}%
-\newcommand{\pDiv}{\mathrm{pDiv}}
-\newcommand{\Ab}{\mathrm{Ab}}%
-\newcommand{\Set}{\mathrm{Set}}
-\newcommand{\Lat}{\mathrm{Lat}}
-\newcommand{\Aff}{\mathrm{Aff}}
-\newcommand{\cgrp}{\mathrm{CGrp}}%
-\newcommand{\fgrp}{\mathrm{FGrp}}%
-\newcommand{\grpf}{\mathrm{GrpFun}}%
+
+\newcommand{\idem}{\mathrm{idem}}
+\newcommand{\Lnf}{L_{\le n}^f}
+\newcommand{\LTm}{L_{T(m)}}
+\newcommand{\LTn}{L_{T(n)}}
+\newcommand{\LTnp}{L_{T(n+1)}}
+\newcommand{\THH}{\mathit{THH}}
+\newcommand{\TC}{\mathit{TC}}
+\newcommand{\triv}{\mathit{triv}}
