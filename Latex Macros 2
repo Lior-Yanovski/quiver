@@ -1,5 +1,5 @@
 \newcommand{\Fin}{\mathrm{Fin}}%
-\newcommand{\Sp}{\mathrm{Sp}}
+\newcommand{\Sp}{\mathcal{S}}
 \newcommand{\pSp}{\widehat{\Sp}_{p}}
 \newcommand{\Prl}{\mathrm{Pr}}
 \newcommand{\Prst}{\mathrm{Pr_{st}}}
